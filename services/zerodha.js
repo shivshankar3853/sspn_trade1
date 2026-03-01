@@ -1,10 +1,7 @@
-const axios = require("axios");
+const axios = require('axios');
 
-async function placeZerodhaOrder(symbol, quantity, side) {
+async function placeZerodhaOrder(symbol, quantity, side, access_token) {
     try {
-
-        console.log("Placing real Zerodha order...");
-
         const response = await axios.post(
             "https://api.kite.trade/orders/regular",
             new URLSearchParams({
@@ -19,16 +16,15 @@ async function placeZerodhaOrder(symbol, quantity, side) {
             {
                 headers: {
                     "X-Kite-Version": "3",
-                    "Authorization": `token ${process.env.Z_API_KEY}:${process.env.Z_ACCESS_TOKEN}`
+                    "Authorization": `token ${process.env.Z_API_KEY}:${access_token}`
                 }
             }
         );
 
-        console.log("Zerodha API SUCCESS:", response.data);
+        console.log("Zerodha order response:", response.data);
         return response.data;
-
     } catch (err) {
-        console.error("Zerodha API ERROR:", err.response?.data || err.message);
+        console.error("Zerodha order error:", err.response?.data || err.message);
         throw err;
     }
 }
